@@ -2,7 +2,10 @@ const { Sequelize } = require("sequelize");
 require("dotenv").config();
 let sequelize;
 if (process.env.DB_URL) {
-    sequelize = new Sequelize(process.env.DB_URL);
+    sequelize = new Sequelize(process.env.DB_URL, {
+        dialect: "postgres",
+        logging: false,
+    });
 } else {
     sequelize = new Sequelize(
         process.env.DB_NAME,
