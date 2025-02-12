@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.0",
         "title": "IMF Gadget API",
-        "description": "API for managing IMF gadgets"
+        "description": "API for managing IMF gadgets\nFirst, create a new user account using the registration endpoint. After the account is created, log in using the provided credentials. A successful login will generate an access token necessary for authenticated requests. For all authenticated API requests, include the access token in the request headers in the format: Bearer <access token>. The access token is valid for 15 minutes. After this period, the token will expire, and any requests made with the expired token will fail. If a request fails due to token expiration, use the /users/refresh-token endpoint to obtain a new access token, ensuring continuous access without requiring the user to log in again."
     },
     "host": "phoenix-v4u1.onrender.com",
     "basePath": "/",
