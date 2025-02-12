@@ -1,0 +1,323 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "IMF Gadget API",
+        "description": "API for managing IMF gadgets"
+    },
+    "host": "localhost:3500",
+    "basePath": "/",
+    "schemes": ["http"],
+    "paths": {
+        "/users/register": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Register a new user",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    },
+                    "500": {
+                        "description": "Failed to register user"
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Login a user",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "400": {
+                        "description": "Invalid password"
+                    },
+                    "500": {
+                        "description": "Failed to login"
+                    }
+                }
+            }
+        },
+        "/gadgets": {
+            "get": {
+                "tags": ["Gadgets"],
+                "summary": "Retrieve a list of all gadgets",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "Available",
+                            "Deployed",
+                            "Destroyed",
+                            "Decommissioned"
+                        ],
+                        "description": "Filter gadgets by status"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "Bearer token"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of gadgets retrieved successfully"
+                    },
+                    "500": {
+                        "description": "Failed to retrieve gadgets"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Gadgets"],
+                "summary": "Add a new gadget to the inventory",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "Bearer token"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Gadget added successfully"
+                    },
+                    "500": {
+                        "description": "Failed to add gadget"
+                    }
+                }
+            }
+        },
+        "/gadgets/{id}": {
+            "patch": {
+                "tags": ["Gadgets"],
+                "summary": "Update an existing gadget's information",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "Bearer token"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "Available",
+                                        "Deployed",
+                                        "Destroyed",
+                                        "Decommissioned"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gadget updated successfully"
+                    },
+                    "404": {
+                        "description": "Gadget not found"
+                    },
+                    "500": {
+                        "description": "Failed to update gadget"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Gadgets"],
+                "summary": "Remove a gadget from the inventory (mark as Decommissioned)",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "Bearer token"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gadget decommissioned successfully"
+                    },
+                    "404": {
+                        "description": "Gadget not found"
+                    },
+                    "500": {
+                        "description": "Failed to decommission gadget"
+                    }
+                }
+            }
+        },
+        "/gadgets/{id}/self-destruct": {
+            "post": {
+                "tags": ["Gadgets"],
+                "summary": "Trigger the self-destruct sequence for a specific gadget",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "Bearer token"
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Self-destruct sequence triggered successfully"
+                    },
+                    "500": {
+                        "description": "Failed to trigger self-destruct sequence"
+                    }
+                }
+            }
+        },
+        "/users/refresh-token": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Refresh the access token",
+                "responses": {
+                    "200": {
+                        "description": "Access token refreshed successfully"
+                    },
+                    "401": {
+                        "description": "No refresh token provided"
+                    },
+                    "403": {
+                        "description": "Invalid refresh token"
+                    }
+                }
+            }
+        },
+        "/users/logout": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Log out the user",
+                "responses": {
+                    "204": {
+                        "description": "User logged out successfully"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Gadget": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "Available",
+                        "Deployed",
+                        "Destroyed",
+                        "Decommissioned"
+                    ]
+                },
+                "decommissionedAt": {
+                    "type": "string"
+                },
+                "successProbability": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
