@@ -5,7 +5,7 @@
         "title": "IMF Gadget API",
         "description": "API for managing IMF gadgets"
     },
-    "host": "https://phoenix-v4u1.onrender.com",
+    "host": "phoenix-v4u1.onrender.com",
     "basePath": "/",
     "schemes": ["https"],
     "paths": {
